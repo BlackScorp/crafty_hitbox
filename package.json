@@ -1,0 +1,28 @@
+{
+    "name": "HitBox",
+    "version": "0.1",
+    "title": "Display Collision Boxes",
+    "author": {
+        "name": "Witali Mik(BlackScorp)",
+        "url": "https://github.com/BlackScorp"
+    },
+    "licenses": [
+        {
+            "type": "MIT",
+           "url": "http://www.opensource.org/licenses/mit-license.php"
+        }
+    ],
+    "dependencies": {
+        "Collision": ">0",
+        "Crafty": ">0.4"
+    },
+    "description": "This Components displays Collision Hitboxes Solid or Wired",
+    "keywords": [
+        "Collision",
+        "Hitbox"
+    ],
+    "homepage": "https://github.com/BlackScorp/crafty_hitbox",
+    "files": [
+        "hitbox.js"
+    ]
+}
