@@ -1,0 +1,1 @@
+Component to display Hitboxes of Entities in CraftyJS Framework 
