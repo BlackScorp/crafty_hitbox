@@ -6,9 +6,8 @@
         "name": "Witali Mik",
         "url": "https://github.com/BlackScorp"
     },
-    "componentExample":{
-      "url": "http://jsfiddle.net/qC9ed/"  
-    },
+    "jsfiddle":"http://jsfiddle.net/qC9ed/"  
+   ,
     "licenses": [
         {
             "type": "MIT",
