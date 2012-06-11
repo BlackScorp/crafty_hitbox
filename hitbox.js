@@ -1,4 +1,30 @@
-
+Crafty.c("HitBox",{
+    _wiredBoxes:{},
+    _solidBoxes:{},
+    _ctx:null,
+    init:function(){
+        if (!Crafty.support.canvas) return;
+        var c = document.getElementById('HitBox');
+        if(!c){
+            c = document.createElement("canvas");
+            c.id = 'HitBox';
+            c.width = Crafty.viewport.width;
+            c.height = Crafty.viewport.height;
+            c.style.position = 'absolute';
+            c.style.left = "0px";
+            c.style.top = "0px";
+            c.style.zIndex = Crafty.stage.elem.style.zIndex+1;
+            Crafty.stage.elem.appendChild(c); 
+        } 
+        this._ctx = c.getContext('2d');
+      
+        this.requires("Collision").bind("NewComponent",function(param){
+            console.log(this.map);
+            console.log(this.has('WiredHitBox'));
+            console.log(this[0]);
+        });
+    }
+});
 /**@
 * #Collision
 * @category Collision
@@ -10,42 +36,32 @@
 * this will display a wired square over your original Canvas screen 
 */
 Crafty.c("WiredHitBox", {
-
+    _points:{},
+    _ctx: null,
     init:function(){
-
-        if (Crafty.support.canvas){ 
-            var c = document.getElementById('HitBox');
-            if(!c){
-                c = document.createElement("canvas");
-                c.id = 'HitBox';
-                c.width = Crafty.viewport.width;
-                c.height = Crafty.viewport.height;
-                c.style.position = 'absolute';
-                c.style.left = "0px";
-                c.style.top = "0px";
-                c.style.zIndex = Crafty.stage.elem.style.zIndex+1;
-                Crafty.stage.elem.appendChild(c); 
-            }
-            var ctx = c.getContext('2d');
-            if(!this.map) this.collision();
-            var drawed = 0,total=Crafty("WiredHitBox").length;
-            this.requires("Collision").bind("EnterFrame",function(){
-                if(drawed == total){
-                    ctx.clearRect(0,0,Crafty.viewport.width,Crafty.viewport.height);
-                    drawed = 0;
-                }
-                ctx.beginPath(); 
-                for(var p in this.map.points){
-                    ctx.lineTo(Crafty.viewport.x+this.map.points[p][0],Crafty.viewport.y+this.map.points[p][1]);  
-                }
-                ctx.closePath(); 
-                ctx.stroke(); 
-                drawed++;
-               
-            }); 
-        }
+        this.addComponent("HitBox");
+        
        
         return this;
+    },
+    drawBox:function(){
+        this._ctx.width = this._ctx.width;
+        this._ctx.beginPath(); 
+        for(var c in this._points){
+            var points = this._points[c];
+            for(var p in points){
+                var point = points[p];
+                if(p == 0){
+                    this._ctx.moveTo(Crafty.viewport.x+point[0],Crafty.viewport.y+point[1]);   
+                }else{
+                    this._ctx.lineTo(Crafty.viewport.x+point[0],Crafty.viewport.y+point[1]);  
+                }
+                
+            }
+                     
+        }
+        this._ctx.closePath(); 
+        this._ctx.stroke(); 
     }
 });
 /*
@@ -57,36 +73,8 @@ Crafty.c("WiredHitBox", {
  */
 Crafty.c("SolidHitBox", {
     init:function(){
-        if (Crafty.support.canvas){ 
-            var c = document.getElementById('HitBox');
-            if(!c){
-                c = document.createElement("canvas");
-                c.id = 'HitBox';
-                c.width = Crafty.viewport.width;
-                c.height = Crafty.viewport.height;
-                c.style.position = 'absolute';
-                c.style.left = "0px";
-                c.style.top = "0px";
-                c.style.zIndex = Crafty.stage.elem.style.zIndex+1;
-                Crafty.stage.elem.appendChild(c); 
-            }
-            var ctx = c.getContext('2d');
-            if(!this.map) this.collision();
-            var drawed = 0,total =Crafty("SolidHitBox").length;
-            this.requires("Collision").bind("EnterFrame",function(){
-                  if(drawed == total){
-                    ctx.clearRect(0,0,Crafty.viewport.width,Crafty.viewport.height);
-                    drawed = 0;
-                }
-                ctx.beginPath(); 
-                for(var p in this.map.points){
-                    ctx.lineTo(Crafty.viewport.x+this.map.points[p][0],Crafty.viewport.y+this.map.points[p][1]);  
-                }
-                ctx.closePath(); 
-                ctx.fill(); 
-                drawed++;
-            }); 
-        }
+        if (!Crafty.support.canvas) return;
+        this.addC
         
         return this;
     }
