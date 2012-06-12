@@ -1,23 +1,3 @@
-Crafty.extend({
-    hitBox:{
-        _wired:{},
-        _solid:{},
-        create:function(obj){
-            this._wired[obj[0]] = {}
-         
-             
-        },
-        set:function(id,points,color){
-            
-        },
-        remove:function(id){
-            
-        },
-        draw:function(ctx){
-            console.log(this._wired);
-        }
-    }
-});
 Crafty.c("HitBox",{
     _wiredBoxes:{},
     _solidBoxes:{},
@@ -40,42 +20,62 @@ Crafty.c("HitBox",{
         } 
         this._canvas = c;
         this._ctx = c.getContext('2d');
-        this.bind("Change",function(){
-            //this._canvas.width =  this._canvas.width ;
+        this.drawBoxes().bind("Change",function(){
+            this._canvas.width =  this._canvas.width ;
          
             this.drawBoxes();
-        }).bind("EnterFrame",function(){
-            if(!this._changed) return;
-            this.drawBoxes();
+            
         })
+         
     },
     drawBoxes:function(){
+        var b,p,pl,box;
+   
+        this._ctx.beginPath();
+        for( b in this._wiredBoxes){
        
-        for(var b in this._wiredBoxes){
-       
-            var box = this._wiredBoxes[b];
+            box = this._wiredBoxes[b];
             
             this._ctx.strokeStyle = box.color;
         
-            this._ctx.beginPath();
+          
       
-            for(var p = 0,pl = box.points.length;p<pl;p++){
-              
+            for(var p = 0,pl = box.points.length;p<pl;p++){   
                 var point = box.points[p];
-             
-         
                 if(p > 0){
-                    console.log("LineTo:"+point[0]+"/"+point[1]);
+                   
                     this._ctx.lineTo(point[0],point[1]); 
                 }else{
-                    console.log("MoveTo:"+point[0]+"/"+point[1]);
+                  
                     this._ctx.moveTo(point[0],point[1]);
                 }
             }
-            this._ctx.closePath();
-            this._ctx.stroke();  
+            
         }
+        this._ctx.closePath();
+        this._ctx.stroke();  
+            
+        this._ctx.beginPath();
+        for( b in this._solidBoxes){
+            box = this._solidBoxes[b];
+            this._ctx.fillStyle = box.color;
+         
+            for( p = 0,pl = box.points.length;p<pl;p++){
+                point = box.points[p];
+                if(p > 0){
+                   
+                    this._ctx.lineTo(point[0],point[1]); 
+                }else{
+                  
+                    this._ctx.moveTo(point[0],point[1]);
+                }
+            }
+          
+        }
+        this._ctx.closePath();
+        this._ctx.fill(); 
   
+        return this;
     }
 });
 
@@ -100,12 +100,12 @@ Crafty.c("WiredHitBox", {
             delete(this._wiredBoxes[id]);
         }).bind("EnterFrame",function(){
             if(!this._changed) return;
-            if(!this.map) this.collision();
+
             this._wiredBoxes[this[0]] = {
                 color:this.hitBoxColor || 'black',
                 points: this.map.points 
             }
-            console.log(this.map);
+            
             
         })
     
@@ -124,8 +124,22 @@ Crafty.c("WiredHitBox", {
  */
 Crafty.c("SolidHitBox", {
     init:function(){
-        if (!Crafty.support.canvas) return;
-        this.addC
+           
+        this.requires("Collision,HitBox")
+       
+        .bind("RemoveComponent",function(id){
+            delete(this._solidBoxes[id]);
+        }).bind("EnterFrame",function(){
+            if(!this._changed) return;
+          
+            this._solidBoxes[this[0]] = {
+                color:this.hitBoxColor || 'black',
+                points: this.map.points 
+            }
+            
+            
+        })
+    
         
         return this;
     }
