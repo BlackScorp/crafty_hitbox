@@ -1,4 +1,19 @@
 $(function(){
     Crafty.init();
-    Crafty.e("2D","DOM","Color","Collision","WiredHitBox").attr({x:10,y:10,w:100,h:100}).color("blue");
+    Crafty.background('#000');
+    Crafty.e("2D","DOM","Color","Collision","WiredHitBox","Fourway").attr({
+        x:10,
+        y:10,
+        w:100,
+        h:100,
+        hitBoxColor:"green"
+    }).color("blue").collision().fourway(5);
+    
+      Crafty.e("2D","DOM","Color","Collision","WiredHitBox").attr({
+        x:110,
+        y:10,
+        w:100,
+        h:100,
+        hitBoxColor:"yellow"
+    }).color("red").collision();
 })
