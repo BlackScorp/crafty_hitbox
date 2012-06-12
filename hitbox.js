@@ -36,7 +36,7 @@ Crafty.c("HitBox",{
        
             box = this._wiredBoxes[b];
             
-            this._ctx.strokeStyle = box.color;
+          //  this._ctx.strokeStyle = box.color;
         
           
       
@@ -58,7 +58,7 @@ Crafty.c("HitBox",{
         this._ctx.beginPath();
         for( b in this._solidBoxes){
             box = this._solidBoxes[b];
-            this._ctx.fillStyle = box.color;
+            //this._ctx.fillStyle = box.color;
          
             for( p = 0,pl = box.points.length;p<pl;p++){
                 point = box.points[p];
