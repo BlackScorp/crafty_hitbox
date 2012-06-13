@@ -20,11 +20,13 @@ Crafty.c("HitBox",{
         } 
         this._canvas = c;
         this._ctx = c.getContext('2d');
-        this.drawBoxes().bind("Change",function(){
+        
+        this.bind("Change",function(){
+          
             this._canvas.width =  this._canvas.width ;
-         
+          
             this.drawBoxes();
-            
+          
         })
          
     },
@@ -36,11 +38,11 @@ Crafty.c("HitBox",{
        
             box = this._wiredBoxes[b];
             
-          //  this._ctx.strokeStyle = box.color;
+            this._ctx.strokeStyle = box.color;
         
           
       
-            for(var p = 0,pl = box.points.length;p<pl;p++){   
+            for( p = 0,pl = box.points.length;p<pl;p++){   
                 var point = box.points[p];
                 if(p > 0){
                    
@@ -58,7 +60,7 @@ Crafty.c("HitBox",{
         this._ctx.beginPath();
         for( b in this._solidBoxes){
             box = this._solidBoxes[b];
-            //this._ctx.fillStyle = box.color;
+            this._ctx.fillStyle = box.color;
          
             for( p = 0,pl = box.points.length;p<pl;p++){
                 point = box.points[p];
@@ -95,20 +97,24 @@ Crafty.c("WiredHitBox", {
    
      
         this.requires("Collision,HitBox")
-       
+        .bind("NewComponent",function(){
+            
+         
+        })
         .bind("RemoveComponent",function(id){
             delete(this._wiredBoxes[id]);
-        }).bind("EnterFrame",function(){
+          }).bind("EnterFrame",function(){
             if(!this._changed) return;
-
+          
             this._wiredBoxes[this[0]] = {
                 color:this.hitBoxColor || 'black',
                 points: this.map.points 
             }
-            
-            
+           
+          
         })
-    
+        
+        
         
         return this;
     }
@@ -123,24 +129,23 @@ Crafty.c("WiredHitBox", {
 * this will display a solid triangle over your original Canvas screen 
  */
 Crafty.c("SolidHitBox", {
+
     init:function(){
            
         this.requires("Collision,HitBox")
-       
+      
         .bind("RemoveComponent",function(id){
             delete(this._solidBoxes[id]);
         }).bind("EnterFrame",function(){
             if(!this._changed) return;
-          
             this._solidBoxes[this[0]] = {
                 color:this.hitBoxColor || 'black',
                 points: this.map.points 
             }
-            
-            
-        })
-    
         
+        });
+   
+           
         return this;
     }
 });

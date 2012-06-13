@@ -7,7 +7,7 @@ $(function(){
         w:100,
         h:100,
         hitBoxColor:"grey"
-    }).color("blue").fourway(5);
+    }).color("blue").collision([0,0],[100,0],[100,100]).fourway(5);
     
  
       Crafty.e("2D","DOM","Color","Collision","SolidHitBox").attr({
